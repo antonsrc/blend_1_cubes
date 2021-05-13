@@ -1,7 +1,7 @@
 #   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *
 # 
 # Name: in the postman's bag
-# Version (date): 2021_05_11
+# Version (date): 2021_05_13
 # Author: Moshnyakov Anton
 # E-mail: anton.source@gmail.com
 # 
@@ -55,7 +55,7 @@ TELEMETRY_SHOW = True
 
 
 # Activating animation:
-ANIM = True
+ANIM = False
 
 
 import bpy
@@ -66,7 +66,6 @@ from pathlib import Path
 C = bpy.context
 D = bpy.data
 O = bpy.ops
-
 
 def degrees_to_radians(x,y,z):
     x = math.radians(x)
@@ -115,6 +114,12 @@ def light_chng(name,rgb,energy_=80000):
     return [name,rgb,energy_]
 
 
+def gravity_add(x=0,y=0,z=0):
+    C.scene.gravity[0] = x
+    C.scene.gravity[1] = y
+    C.scene.gravity[2] = z
+
+
 def export_image_settings(start_,end_,x,y,render_samples,stamp,anim):
     C.scene.render.fps = 24
     C.scene.render.fps_base = 1
@@ -138,7 +143,7 @@ def export_image_settings(start_,end_,x,y,render_samples,stamp,anim):
     C.scene.render.use_stamp_camera = False
     C.scene.render.use_stamp_scene = False
     C.scene.render.use_stamp_filename = False
-    C.scene.render.stamp_font_size = 20
+    C.scene.render.stamp_font_size = 16 # 20
     C.scene.render.stamp_foreground = (0,0,0,1)
     C.scene.render.stamp_background = (1,1,1,0.25)
     C.scene.render.use_stamp_note = True
@@ -147,8 +152,8 @@ def export_image_settings(start_,end_,x,y,render_samples,stamp,anim):
 def bake_animation(start,end):
     O.ptcache.free_bake_all()
     pc = C.scene.rigidbody_world.point_cache
-    pc.frame_start = FR_START
-    pc.frame_end = FR_END
+    pc.frame_start = 1
+    pc.frame_end = end
     O.ptcache.bake_all({'point cache': pc},bake = True)
 
 
@@ -493,6 +498,8 @@ light2 = light_add('AREA', 0, 0, 33,energy_=140000)
 
 camera_add(20, -20, 40, 210, 180, -135)
 
+gravity_add(z = -1)
+
 world_color()
 
 export_image_settings(
@@ -516,7 +523,7 @@ mod_apply_subsurf(ico, 3, 3)
 O.object.shade_smooth()
 
 # frames with big Icosphere
-fr_step_ico = 18
+fr_step_ico = 170
 FR_END_ico = FR_END + fr_step_ico
 for i in range(FR_START,FR_END_ico,fr_step_ico):
     x = randint(0, 359)
@@ -563,9 +570,9 @@ else:
 bake_animation(FR_START, FR_END)
 
 ob = li = en = 1
-ob_last = 36
-li_last = 15
-en_last = 8
+ob_last = 50
+li_last = 18
+en_last = 21
 
 ob_color = mat_color()
 ob_color.start(NUM_OBJS,'Mat')
@@ -623,89 +630,95 @@ if ANIM == False:
             ob_color.rand_rgb(x[0],x[1])
             ob_color.r(choice(arr_ob_1))
         elif ob==7:
+            ob_color.rand_rgb(x[0],x[1])
+            ob_color.g(choice(arr_ob_1))
+        elif ob==8:
+            ob_color.rand_rgb(x[0],x[1])
+            ob_color.b(choice(arr_ob_1))
+        elif ob==9:
             ob_color.start(NUM_OBJS,'Mat','Emission')
             C.scene.eevee.use_bloom = True  # use bloom
             ob_color.rand_rgb(x[0],x[1])
+            ob_color.r(choice(arr_ob_1))
+            ob_color.st(1)
+        elif ob==10:
+            ob_color.rand_rgb(x[0],x[1])
             ob_color.g(choice(arr_ob_1))
-            ob_color.st(10)
-        elif ob==8:
-            ob_color.start(NUM_OBJS,'Mat')
-            C.scene.eevee.use_bloom = False
+            ob_color.st(1)
+        elif ob==11:
             ob_color.rand_rgb(x[0],x[1])
             ob_color.b(choice(arr_ob_1))
-        elif ob>=9 and ob<=11:
-            ob_color.start(NUM_OBJS,'Mat','Emission')
-            C.scene.eevee.use_bloom = True
-            ob_color.rand_rgb(x[0],x[1])
-            ob_color.r(choice(arr_ob_1))
-            ob_color.g(choice(arr_ob_1))
-            ob_color.st(10)
+            ob_color.st(1)
         elif ob>=12 and ob<=14:
+            ob_color.rand_rgb(x[0],x[1])
+            ob_color.st(randint(2,7))
+        elif ob==15:
             ob_color.start(NUM_OBJS,'Mat')
             C.scene.eevee.use_bloom = False
+            ob_color.rand_rgb(x[0],x[1])
+            ob_color.r(choice(arr_ob_1))
+            ob_color.g(choice(arr_ob_1))
+        elif ob==16:
             ob_color.rand_rgb(x[0],x[1])
             ob_color.g(choice(arr_ob_1))
             ob_color.b(choice(arr_ob_1))
-        elif ob>=15 and ob<=17:
-            ob_color.start(NUM_OBJS,'Mat','Emission')
-            C.scene.eevee.use_bloom = True
+        elif ob==17:
             ob_color.rand_rgb(x[0],x[1])
             ob_color.r(choice(arr_ob_1))
-            ob_color.st(10)
+            ob_color.b(choice(arr_ob_1))
         elif ob==18:
-            ob_color.start(NUM_OBJS,'Mat')
-            C.scene.eevee.use_bloom = False
             ob_color.rand_gray(x[0],x[1])
         elif ob==19:
             ob_color.start(NUM_OBJS,'Mat','Emission')
             C.scene.eevee.use_bloom = True
             ob_color.a(choice(arr_ob_1[6:]))
             ob_color.rand_gray(x[0],x[1])
+            ob_color.st(randint(1,5))
         elif ob==20:
+
+
+            ob_color.a(choice(arr_ob_1[6:]))
+            ob_color.rand_rgb(x[0],x[1])
+            ob_color.st(randint(1,5))
+        elif ob>=21 and ob<=23:
             ob_color.start(NUM_OBJS,'Mat')
             C.scene.eevee.use_bloom = False
             ob_color.rand_rgb_full(x[0],x[1])
             ob_color.rand_a(y[0],y[1])
-        elif ob>=21 and ob<=23:
+        elif ob>=24 and ob<=26:
             ob_color.start(NUM_OBJS,'Mat','Emission')
             C.scene.eevee.use_bloom = True
             ob_color.rand_rgb_full(x[0],x[1])
-        elif ob>=24 and ob<=26:
+            ob_color.rand_a(y[0],y[1])
+            ob_color.st(randint(1, 3))
+        elif ob>=27 and ob<=29:
+            ob_color.rand_rgb_full(x[0],x[1])
+            ob_color.st(randint(1, 3))
+        elif ob>=30 and ob<=32:
             ob_color.start(NUM_OBJS,'Mat')
             C.scene.eevee.use_bloom = False
             ob_color.rand_rgb(x[0],x[1])
             ob_color.rand_a(y[0],y[1])
-        elif ob>=27 and ob<=29:
+        elif ob>=33 and ob<=35:
             ob_color.rand_a(y[0],y[1])
             ob_color.r(choice(arr_ob_1))
             ob_color.g(choice(arr_ob_1))
             ob_color.b(choice(arr_ob_1))
-        elif ob==30:
-            ob_color.rand_a(y[0],y[1])
+        elif ob>=36 and ob<=38:
             ob_color.rand_rgb(x[0],x[1])
-        elif ob==31:
+            ob_color.rand_a(y[0],y[1])
+        elif ob>=39 and ob<=41:
             ob_color.a(choice(arr_ob_1[6:]))
             ob_color.rand_rgb(x[0],x[1])
-        elif ob==32:
+        elif ob>=42 and ob<=44:
             ob_color.start(NUM_OBJS,'Mat','Emission')
             C.scene.eevee.use_bloom = True
             ob_color.rand_rgb(x[0],x[1])
-            ob_color.st(randint(1, 50))
-        elif ob==33:
-            ob_color.start(NUM_OBJS,'Mat','Emission')
-            C.scene.eevee.use_bloom = True
-            ob_color.rand_rgb(x[0],x[1])
-            ob_color.st(randint(1, 50))
-        elif ob==34:
-            ob_color.start(NUM_OBJS,'Mat','Emission')
-            C.scene.eevee.use_bloom = True
-            ob_color.rand_rgb(x[0],x[1])
-            ob_color.st(10)
-        elif ob==35:
-            ob_color.start(NUM_OBJS,'Mat','Emission')
-            C.scene.eevee.use_bloom = True
-            ob_color.rand_rgb(x[0],x[1])
-            ob_color.st(10)
+            ob_color.st(randint(11, 25))
+        elif ob>=45 and ob<=49:
+            ob_color.start(NUM_OBJS,'Mat')
+            C.scene.eevee.use_bloom = False
+            ob_color.rand_rgb_full(x[0],x[1])
         elif ob==ob_last:
             ob_color.start(NUM_OBJS,'Mat')
             C.scene.eevee.use_bloom = False
@@ -738,7 +751,7 @@ if ANIM == False:
             r2 = rgb[0]
             g2 = rgb[1]
             b2 = rgb[2]
-        elif li==8:
+        elif li>=8 and li<=10:
             rgb = rgb_rand(0, 1000)
             r0 = rgb[0]
             g0 = rgb[1]
@@ -748,33 +761,30 @@ if ANIM == False:
             g1 = rgb[1]
             b1 = rgb[2]
             rgb = rgb_rand(0, 1000)
-            r2 = rgb[0]
-            g2 = rgb[1]
-            b2 = rgb[2]
-        elif li==9:
-            rgb = rgb_rand(0, 1000)
-            r0 = rgb[0]
-            g0 = rgb[1]
-            b0 = rgb[2]
-            rgb = rgb_rand(0, 1000)
-            r1 = rgb[0]
-            g1 = rgb[1]
-            b1 = rgb[2]
-            r2 = g2 = b2 = 1
-        elif li==10:
-            rgb = rgb_rand(100, 900)
-            r0 = rgb[0]
-            g0 = rgb[1]
-            b0 = rgb[2]
-            rgb = rgb_rand(100, 900)
-            r1 = rgb[0]
-            g1 = rgb[1]
-            b1 = rgb[2]
-            rgb = rgb_rand(100, 900)
             r2 = rgb[0]
             g2 = rgb[1]
             b2 = rgb[2]
         elif li==11:
+            r0 = b0 = g0 = 1
+            rgb = rgb_rand(0, 1000)
+            r1 = rgb[0]
+            g1 = rgb[1]
+            b1 = rgb[2]
+            rgb = rgb_rand(0, 1000)
+            r2 = rgb[0]
+            g2 = rgb[1]
+            b2 = rgb[2]
+        elif li==12:
+            rgb = rgb_rand(100, 900)
+            r0 = rgb[0]
+            g0 = rgb[1]
+            b0 = rgb[2]
+            r1 = g1 = b1 = 1
+            rgb = rgb_rand(100, 900)
+            r2 = rgb[0]
+            g2 = rgb[1]
+            b2 = rgb[2]
+        elif li==13:
             rgb = rgb_rand(100, 900)
             r0 = rgb[0]
             g0 = rgb[1]
@@ -784,7 +794,7 @@ if ANIM == False:
             g1 = rgb[1]
             b1 = rgb[2]
             r2 = g2 = b2 = 1
-        elif li==12:
+        elif li==14:
             r0 = 1
             g0 = randint(0, 1000)*0.001
             b0 = randint(0, 1000)*0.001
@@ -794,7 +804,7 @@ if ANIM == False:
             r2 = randint(0, 1000)*0.001
             g2 = randint(0, 1000)*0.001
             b2 = 1
-        elif li==13:
+        elif li==15:
             r0 = randint(0, 1000)*0.001
             g0 = 1
             b0 = randint(0, 1000)*0.001
@@ -804,7 +814,7 @@ if ANIM == False:
             r2 = 1
             g2 = randint(0, 1000)*0.001
             b2 = randint(0, 1000)*0.001
-        elif li==14:
+        elif li==16:
             r0 = randint(0, 1000)*0.001
             g0 = randint(0, 1000)*0.001
             b0 = 1
@@ -814,7 +824,7 @@ if ANIM == False:
             r2 = randint(0, 1000)*0.001
             g2 = 1
             b2 = randint(0, 1000)*0.001
-        elif li==li_last:
+        elif li==17:
             zz = rgb_rand(100, 1000)
             r0 = zz[0]
             g0 = zz[1]
@@ -827,13 +837,15 @@ if ANIM == False:
             r2 = zz[0]
             g2 = zz[1]
             b2 = zz[2]
+        elif li==li_last:
+            r0 = g0 = b0 = 0
+            r1 = g1 = b1 = 0
+            r2 = g2 = b2 = 0
             li = 0
         li1 = light_chng(light0, [r0,g0,b0])
         li2 = light_chng(light1, [r1,g1,b1])
         li3 = light_chng(light2, [r2,g2,b2],energy_=140000)
-
         li_telem = [str(li1),str(li2),str(li3)]
-
         r0 = g0 = b0 = 0
         r1 = g1 = b1 = 0
         r2 = g2 = b2 = 0
@@ -855,8 +867,12 @@ if ANIM == False:
         elif en == 7:
             en_color.rand_rgb(100, 900)
             en_color.b(1)
-        elif en == en_last:
+        elif en >= 8 and en <= 14:
+            en_color.rand_rgb(0, 1000)
+        elif en >= 15 and en <= 20:
             en_color.rand_rgb_full(randint(0, 500), randint(501,1000))
+        elif en == en_last:
+            en_color.rand_rgb_full(0, 1000)
             en = 0
         en_telem = en_color.change()
 
@@ -882,9 +898,15 @@ else:
     ob_color.rand_rgb(x[0],x[1])
     ob_telem = ob_color.change()
 
-    r0 = g0 = b0 = 1
-    r1 = g1 = b1 = 1
-    r2 = g2 = b2 = 1
+    r0 = randint(0, 1000)*0.001
+    g0 = randint(0, 1000)*0.001
+    b0 = 1
+    r1 = 1
+    g1 = randint(0, 1000)*0.001
+    b1 = randint(0, 1000)*0.001
+    r2 = randint(0, 1000)*0.001
+    g2 = 1
+    b2 = randint(0, 1000)*0.001
 
     li1 = light_chng(light0, [r0,g0,b0])
     li2 = light_chng(light1, [r1,g1,b1])
@@ -905,5 +927,3 @@ else:
     path_file = Path(path_out, file_out)
     C.scene.render.filepath = str(path_file)
     O.render.render(animation = True)
-
-
