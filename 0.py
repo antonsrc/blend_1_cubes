@@ -1,7 +1,7 @@
 #   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *
 # 
 # Name: in the postman's bag
-# Version (date): 2021_05_13
+# Version (date): 2021_05_14
 # Author: Moshnyakov Anton
 # E-mail: anton.source@gmail.com
 # 
@@ -25,7 +25,7 @@
 # Output directory in variable PATH_OUT between ''
 # Example for output directory in Windows D:\py\out is:
 # PATH_OUT = r'D:\py\out'
-PATH_OUT = r'C:\py\out'
+PATH_OUT = r'/home/antonsrc/out'
 
 
 # Select (uncomment) only one of a type object (OBJ_):
@@ -620,11 +620,7 @@ if ANIM == False:
             ob_color.r(1)
             ob_color.g(1)
             ob_color.b(1)
-        elif ob==2:
-            ob_color.r(0)
-            ob_color.g(0)
-            ob_color.b(0)
-        elif ob>=3 and ob<=5:
+        elif ob>=2 and ob<=5:
             ob_color.rand_rgb(x[0],x[1])
         elif ob==6:
             ob_color.rand_rgb(x[0],x[1])
@@ -662,12 +658,10 @@ if ANIM == False:
             ob_color.rand_rgb(x[0],x[1])
             ob_color.g(choice(arr_ob_1))
             ob_color.b(choice(arr_ob_1))
-        elif ob==17:
+        elif ob>=17 and ob<=18:
             ob_color.rand_rgb(x[0],x[1])
             ob_color.r(choice(arr_ob_1))
             ob_color.b(choice(arr_ob_1))
-        elif ob==18:
-            ob_color.rand_gray(x[0],x[1])
         elif ob==19:
             ob_color.start(NUM_OBJS,'Mat','Emission')
             C.scene.eevee.use_bloom = True
@@ -675,8 +669,6 @@ if ANIM == False:
             ob_color.rand_gray(x[0],x[1])
             ob_color.st(randint(1,5))
         elif ob==20:
-
-
             ob_color.a(choice(arr_ob_1[6:]))
             ob_color.rand_rgb(x[0],x[1])
             ob_color.st(randint(1,5))
@@ -707,10 +699,10 @@ if ANIM == False:
         elif ob>=36 and ob<=38:
             ob_color.rand_rgb(x[0],x[1])
             ob_color.rand_a(y[0],y[1])
-        elif ob>=39 and ob<=41:
+        elif ob>=39 and ob<=40:
             ob_color.a(choice(arr_ob_1[6:]))
             ob_color.rand_rgb(x[0],x[1])
-        elif ob>=42 and ob<=44:
+        elif ob>=41 and ob<=44:
             ob_color.start(NUM_OBJS,'Mat','Emission')
             C.scene.eevee.use_bloom = True
             ob_color.rand_rgb(x[0],x[1])
