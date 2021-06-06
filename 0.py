@@ -25,33 +25,33 @@
 # Output directory in variable PATH_OUT between ''
 # Example for output directory in Windows D:\py\out is:
 # PATH_OUT = r'D:\py\out'
-PATH_OUT = r'/home/antonsrc/out'
+PATH_OUT = r'C:\py\out'
 
 
 # Select (uncomment) only one of a type object (OBJ_):
-# OBJ_ = 'mix'
+OBJ_ = 'mix'
 # OBJ_ = 'torus'
-OBJ_ = 'cube'
+# OBJ_ = 'cube'
 # OBJ_ = 'cone'
 # OBJ_ = 'sphere'
 
 
 # Set number of objects:
-NUM_OBJS = 50
+NUM_OBJS = 500
 
 
 # Set timeline (if FR_START = 1, so FR_END will define number of frames):
 FR_START = 1
-FR_END = 50
+FR_END = 1000
 
 
 # Set dimensions of frames:
-FR_DIM_X = 500
-FR_DIM_Y = 500
+FR_DIM_X = 1400
+FR_DIM_Y = 800
 
 
 # Activating show telemetry:
-TELEMETRY_SHOW = True
+TELEMETRY_SHOW = False
 
 
 # Activating animation:
@@ -169,7 +169,7 @@ def rgb_rand(start,end):
     g = randint(start,end)*0.001
     b = randint(start,end)*0.001
 
-    # bicycle
+    # bicycl e
     # for not gray colors
     dif = 0.05
     while ((b >= (r - dif) and b <=(r + dif))
@@ -507,7 +507,7 @@ export_image_settings(
     FR_END,
     FR_DIM_X,
     FR_DIM_Y,
-    16,
+    64,
     TELEMETRY_SHOW,
     ANIM) # 64
 
@@ -523,7 +523,7 @@ mod_apply_subsurf(ico, 3, 3)
 O.object.shade_smooth()
 
 # frames with big Icosphere
-fr_step_ico = 170
+fr_step_ico = 50
 FR_END_ico = FR_END + fr_step_ico
 for i in range(FR_START,FR_END_ico,fr_step_ico):
     x = randint(0, 359)
@@ -875,7 +875,7 @@ if ANIM == False:
             '\n\nLIGHTS:\n'+str('\n'.join(li_telem)))
         
         path_out = PATH_OUT + '\\'
-        file_out = str(fr)
+        file_out = '0_' + str(fr)
         path_file = Path(path_out, file_out)
         C.scene.render.filepath = str(path_file)
         O.render.render(write_still = True)
