@@ -46,8 +46,8 @@ M_SIZE = 10
 
 
 # Set timeline (if FR_START = 1, so FR_END will define number of frames):
-FR_START = 1
-FR_END = 500
+FR_START = 200
+FR_END = 921
 
 
 # Set dimensions of frames:
@@ -60,7 +60,7 @@ TELEMETRY_SHOW = False
 
 
 # Activating animation:
-ANIM = False
+ANIM = True
 
 
 import bpy
@@ -526,7 +526,7 @@ light2 = light_add('AREA', 0, 0, 33,energy_=140000)
 
 camera_add(20, -20, 40, 210, 180, -135)
 
-gravity_add(z = -1)
+gravity_add()
 
 world_color()
 
@@ -535,7 +535,7 @@ export_image_settings(
     FR_END,
     FR_DIM_X,
     FR_DIM_Y,
-    64,
+    32,
     TELEMETRY_SHOW,
     ANIM) # 64
 
@@ -905,7 +905,7 @@ if ANIM == False:
             '\n\nLIGHTS:\n'+str('\n'.join(li_telem)))
         
         path_out = PATH_OUT + '\\'
-        file_out = '0_' + str(fr)
+        file_out = '9_' + str(fr)
         path_file = Path(path_out, file_out)
         C.scene.render.filepath = str(path_file)
         O.render.render(write_still = True)
@@ -945,7 +945,7 @@ else:
         '\n\nLIGHTS:\n'+str('\n'.join(li_telem)))
     
     path_out = PATH_OUT + '\\'
-    file_out = 'anim'
+    file_out = '12_anim'
     path_file = Path(path_out, file_out)
     C.scene.render.filepath = str(path_file)
     O.render.render(animation = True)

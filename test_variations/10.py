@@ -47,7 +47,7 @@ M_SIZE = 10
 
 # Set timeline (if FR_START = 1, so FR_END will define number of frames):
 FR_START = 1
-FR_END = 500
+FR_END = 400
 
 
 # Set dimensions of frames:
@@ -905,7 +905,7 @@ if ANIM == False:
             '\n\nLIGHTS:\n'+str('\n'.join(li_telem)))
         
         path_out = PATH_OUT + '\\'
-        file_out = '0_' + str(fr)
+        file_out = '10_' + str(fr)
         path_file = Path(path_out, file_out)
         C.scene.render.filepath = str(path_file)
         O.render.render(write_still = True)

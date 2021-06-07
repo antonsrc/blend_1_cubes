@@ -1,7 +1,7 @@
 #   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *
 # 
 # Name: in the postman's bag
-# Version (date): 2021_06_07
+# Version (date): 2021_05_14
 # Author: Moshnyakov Anton
 # E-mail: anton.source@gmail.com
 # 
@@ -29,25 +29,20 @@ PATH_OUT = r'C:\py\out'
 
 
 # Select (uncomment) only one of a type object (OBJ_):
-# OBJ_ = 'mix'
+OBJ_ = 'mix'
 # OBJ_ = 'torus'
 # OBJ_ = 'cube'
 # OBJ_ = 'cone'
 # OBJ_ = 'sphere'
-OBJ_ = 'icosph'
 
 
 # Set number of objects:
-NUM_OBJS = 400
-
-
-# Set number of objects in row/col
-M_SIZE = 10
+NUM_OBJS = 500
 
 
 # Set timeline (if FR_START = 1, so FR_END will define number of frames):
-FR_START = 1
-FR_END = 500
+FR_START = 200
+FR_END = 921
 
 
 # Set dimensions of frames:
@@ -60,7 +55,7 @@ TELEMETRY_SHOW = False
 
 
 # Activating animation:
-ANIM = False
+ANIM = True
 
 
 import bpy
@@ -92,21 +87,14 @@ def del_all_objs():
         D.images.remove(D.images[0])
     while len(D.lights) != 0:
         D.lights.remove(D.lights[0])
-    while len(D.curves) != 0:
-        D.curves.remove(D.curves[0])
 
 
-def camera_add(x,y,z,rx,ry,rz,type_='PERSP'):
+def camera_add(x,y,z,rx,ry,rz):
     O.object.camera_add(
         align = 'VIEW',
         location = (x,y,z),
         rotation = degrees_to_radians(rx,ry,rz))
     C.scene.camera = D.objects[C.active_object.name]
-    if type_ == 'ORTHO':
-        C.object.data.ortho_scale = 23
-        C.object.data.type = 'ORTHO'
-    else:
-        C.object.data.type = 'PERSP'
     return C.active_object.name
 
 
@@ -282,31 +270,29 @@ def mix():
     return [name,min_size,max_size]
 
 
-def icosph():
-    name = 'icosph'
-    min_size = 5
-    max_size = 22
-    return [name,min_size,max_size]
-
-
-def arr_xyz(obj,arr_size,numObj,m_size):
+def arr_xyz(obj,arr_size,numObj):
     arr_x = []
     arr_y = []
     arr_z = []
-    border = x = y = z = -arr_size + (arr_size/m_size)
+    clearance = 0.7
+    size_ratio = 0.1
+    max_size_rat = obj[2]*size_ratio + clearance
+    x = -(arr_size+max_size_rat)
+    y = -arr_size
+    z = -arr_size
     for i in range(numObj):
+        if x < arr_size:
+            x +=max_size_rat
+        elif y < arr_size - max_size_rat:
+            x = -arr_size
+            y += max_size_rat
+        elif z < arr_size - max_size_rat:
+            x = -arr_size
+            y = -arr_size
+            z += max_size_rat
         arr_x.append(x)
         arr_y.append(y)
         arr_z.append(z)
-        if x < -border:
-            x += arr_size*2/m_size
-        elif y < -border:
-            x = border
-            y += arr_size*2/m_size
-        elif z < -border:
-            x = border
-            y = border
-            z += arr_size*2/m_size
     return [arr_x,arr_y,arr_z]
 
 
@@ -331,17 +317,13 @@ def obj_add(obj_type,o_size,xyz):
             radius1=o_size,
             depth=o_size*1.5,
             location=xyz)
-    elif obj_type == 'icosph':
-        O.mesh.primitive_ico_sphere_add(
-            radius=o_size,
-            location=xyz)
 
     ob = C.active_object
     r = randint(200,1000)*0.001
     g = randint(200,1000)*0.001
     b = randint(200,1000)*0.001
     mat_for_obj(ob,'Mat',[r,g,b,0])
-    rigidbody_for_obj(ob,'CONVEX_HULL',False,100)
+    rigidbody_for_obj(ob,'CONVEX_HULL',False,15)
 
     # add modifiers
     if obj_type == 'cube':
@@ -354,16 +336,6 @@ def obj_add(obj_type,o_size,xyz):
         mod_apply_subsurf(ob,1,1)
     elif obj_type == 'torus':
         mod_apply_subsurf(ob,1,1)
-    elif obj_type == 'icosph':
-        mod_apply_subsurf(ob,3,3)
-        len_vert = len(list(ob.data.vertices))
-        for i in range(len_vert):
-            f0 = ob.data.vertices[i].co[0]
-            f1 = ob.data.vertices[i].co[1]
-            f2 = ob.data.vertices[i].co[2]
-            r1 = randint(5,10)*0.1
-            ob.data.vertices[i].co = (f0*r1,f1*r1,f2*r1)
-            # mod_apply_subsurf(ob,1,1)
     O.object.shade_smooth()
 
 
@@ -526,7 +498,7 @@ light2 = light_add('AREA', 0, 0, 33,energy_=140000)
 
 camera_add(20, -20, 40, 210, 180, -135)
 
-gravity_add(z = -1)
+gravity_add()
 
 world_color()
 
@@ -535,7 +507,7 @@ export_image_settings(
     FR_END,
     FR_DIM_X,
     FR_DIM_Y,
-    64,
+    32,
     TELEMETRY_SHOW,
     ANIM) # 64
 
@@ -564,8 +536,7 @@ for i in range(FR_START,FR_END_ico,fr_step_ico):
 # bicycle
 # create sphere for protected camera
 ico_rad = 15
-protect_rad = 5
-O.mesh.primitive_uv_sphere_add(radius=protect_rad,location=(20,-20,40))
+O.mesh.primitive_uv_sphere_add(radius=ico_rad,location=(13,-15,27))
 cam_sphere = C.active_object
 rigidbody_for_obj(cam_sphere,'MESH', True, 15)
 mat_for_obj(cam_sphere, 'Mat_transparent',alpha=0)
@@ -577,10 +548,9 @@ elif OBJ_ == 'torus': OBJ = torus()
 elif OBJ_ == 'cube': OBJ = cube()
 elif OBJ_ == 'cone': OBJ = cone()
 elif OBJ_ == 'sphere': OBJ = sphere()
-elif OBJ_ == 'icosph': OBJ = icosph()
 
 # add array of little objs in Icosphere
-ar = arr_xyz(OBJ,ico_rad,NUM_OBJS,M_SIZE)
+ar = arr_xyz(OBJ,ico_rad,NUM_OBJS)
 
 # add objects in array
 if (OBJ[0] != 'mix'):
@@ -905,7 +875,7 @@ if ANIM == False:
             '\n\nLIGHTS:\n'+str('\n'.join(li_telem)))
         
         path_out = PATH_OUT + '\\'
-        file_out = '0_' + str(fr)
+        file_out = '4_' + str(fr)
         path_file = Path(path_out, file_out)
         C.scene.render.filepath = str(path_file)
         O.render.render(write_still = True)
@@ -945,7 +915,7 @@ else:
         '\n\nLIGHTS:\n'+str('\n'.join(li_telem)))
     
     path_out = PATH_OUT + '\\'
-    file_out = 'anim'
+    file_out = '8_anim'
     path_file = Path(path_out, file_out)
     C.scene.render.filepath = str(path_file)
     O.render.render(animation = True)
