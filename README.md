@@ -12,8 +12,6 @@
 
 ## demos (vimeo)
 [![](https://github.com/antonsrc/1_algorithm_demo_1/blob/main/out/prev.jpg?raw=true)](https://vimeo.com/559614923/)
-[![](https://github.com/antonsrc/1_algorithm_demo_1/blob/main/out/prev.jpg?raw=true)](https://vimeo.com/559614923/)
-[![](https://github.com/antonsrc/1_algorithm_demo_1/blob/main/out/prev.jpg?raw=true)](https://vimeo.com/559614923/)
 
 ## demos (snaps)
 ![](https://github.com/antonsrc/1_algorithm_demo_1/blob/main/out/prev.jpg?raw=true)
