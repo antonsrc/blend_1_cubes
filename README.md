@@ -13,7 +13,6 @@
 ## demos (snaps)
 ![](https://github.com/antonsrc/0_in_the_postman_s_bag/blob/main/out/10_133.jpg?raw=true)
 ![](https://github.com/antonsrc/0_in_the_postman_s_bag/blob/main/out/3_495.jpg?raw=true)
-![](https://github.com/antonsrc/0_in_the_postman_s_bag/blob/main/out/4_470.jpg?raw=true)
 ![](https://github.com/antonsrc/0_in_the_postman_s_bag/blob/main/out/10_297.jpg?raw=true)
 ![](https://github.com/antonsrc/0_in_the_postman_s_bag/blob/main/out/9_162.jpg?raw=true)
 ![](https://github.com/antonsrc/0_in_the_postman_s_bag/blob/main/out/10_17.jpg?raw=true)
