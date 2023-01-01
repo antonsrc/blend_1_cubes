@@ -1,6 +1,6 @@
 # in the postman's bag
 
-## 0.py
+## main.py
 Основной скрипт. Результаты работы смотрите ниже.
 
 ## demos (snaps)
