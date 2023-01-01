@@ -17,6 +17,5 @@
 ![](https://github.com/antonsrc/0_in_the_postman_s_bag/blob/main/out/9_162.jpg?raw=true)
 ![](https://github.com/antonsrc/0_in_the_postman_s_bag/blob/main/out/10_17.jpg?raw=true)
 ![](https://github.com/antonsrc/0_in_the_postman_s_bag/blob/main/out/3_302.jpg?raw=true)
-![](https://github.com/antonsrc/0_in_the_postman_s_bag/blob/main/out/1_265.jpg?raw=true)
 ![](https://github.com/antonsrc/0_in_the_postman_s_bag/blob/main/out/10_395.jpg?raw=true)
 ![](https://github.com/antonsrc/0_in_the_postman_s_bag/blob/main/out/9_389.jpg?raw=true)
