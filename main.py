@@ -5,7 +5,6 @@
 
 
 
-
 # Two way for script running:
 # 
 # 1 Write in console:
