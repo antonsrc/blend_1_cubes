@@ -1,11 +1,7 @@
-#   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *
-# 
 # Name: in the postman's bag
 # Version (date): 2021_06_07
 # Author: Moshnyakov Anton
 # E-mail: anton.source@gmail.com
-# 
-#   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *   *
 
 
 
